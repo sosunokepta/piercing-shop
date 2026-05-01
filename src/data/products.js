@@ -1,55 +1,37 @@
-import piercing1 from "../assets/products/piercing-1.jpg"
-import piercing2 from "../assets/products/piercing-2.jpg"
-import piercing3 from "../assets/products/piercing-3.jpg"
-import piercing4 from "../assets/products/piercing-4.jpg"
-import piercing5 from "../assets/products/piercing-5.jpg"
-
-import tunnel1 from "../assets/products/tunnel-1.jpg"
-import tunnel2 from "../assets/products/tunnel-2.jpg"
-import tunnel3 from "../assets/products/tunnel-3.jpg"
-import tunnel4 from "../assets/products/tunnel-4.jpg"
-import tunnel5 from "../assets/products/tunnel-5.jpg"
-
-import earring1 from "../assets/products/earring-1.jpg"
-import earring2 from "../assets/products/earring-2.jpg"
-import earring3 from "../assets/products/earring-3.jpg"
-import earring4 from "../assets/products/earring-4.jpg"
-import earring5 from "../assets/products/earring-5.jpg"
-
 const products = [
   {
     id: 1,
     name: "Steel Ring",
     price: 1200,
-    image: piercing1,
+    image: "/products/piercing-1.jpg",
     category: "piercing",
   },
   {
     id: 2,
     name: "Barbell",
     price: 1300,
-    image: piercing2,
+    image: "/products/piercing-2.jpg",
     category: "piercing",
   },
   {
     id: 3,
     name: "Spike Bar",
     price: 1400,
-    image: piercing3,
+    image: "/products/piercing-3.jpg",
     category: "piercing",
   },
   {
     id: 4,
     name: "Labret",
     price: 1100,
-    image: piercing4,
+    image: "/products/piercing-4.jpg",
     category: "piercing",
   },
   {
     id: 5,
     name: "Nose Ring",
     price: 900,
-    image: piercing5,
+    image: "/products/piercing-5.jpg",
     category: "piercing",
   },
 
@@ -57,35 +39,35 @@ const products = [
     id: 6,
     name: "Black Tunnel",
     price: 900,
-    image: tunnel1,
+    image: "/products/tunnel-1.jpg",
     category: "tunnels",
   },
   {
     id: 7,
     name: "Steel Tunnel",
     price: 1100,
-    image: tunnel2,
+    image: "/products/tunnel-2.jpg",
     category: "tunnels",
   },
   {
     id: 8,
     name: "Wood Tunnel",
     price: 1300,
-    image: tunnel3,
+    image: "/products/tunnel-3.jpg",
     category: "tunnels",
   },
   {
     id: 9,
     name: "Skull Tunnel",
     price: 1500,
-    image: tunnel4,
+    image: "/products/tunnel-4.jpg",
     category: "tunnels",
   },
   {
     id: 10,
     name: "Gold Tunnel",
     price: 1700,
-    image: tunnel5,
+    image: "/products/tunnel-5.jpg",
     category: "tunnels",
   },
 
@@ -93,35 +75,35 @@ const products = [
     id: 11,
     name: "Cross Earring",
     price: 1500,
-    image: earring1,
+    image: "/products/earring-1.jpg",
     category: "earrings",
   },
   {
     id: 12,
     name: "Chain Earring",
     price: 1600,
-    image: earring2,
+    image: "/products/earring-2.jpg",
     category: "earrings",
   },
   {
     id: 13,
     name: "Skull Earring",
     price: 1800,
-    image: earring3,
+    image: "/products/earring-3.jpg",
     category: "earrings",
   },
   {
     id: 14,
     name: "Gold Hoop",
     price: 1400,
-    image: earring4,
+    image: "/products/earring-4.jpg",
     category: "earrings",
   },
   {
     id: 15,
     name: "Dagger Earring",
     price: 2000,
-    image: earring5,
+    image: "/products/earring-5.jpg",
     category: "earrings",
   },
 ]
