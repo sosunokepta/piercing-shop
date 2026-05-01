@@ -1,56 +1,58 @@
 import { Link } from "react-router-dom"
 import toast from "react-hot-toast"
+
 import { useCart } from "../context/CartContext"
 
 function ProductCard({ product }) {
-  const {
-    cartItems,
-    addToCart,
-    increaseQuantity,
-    decreaseQuantity,
-  } = useCart()
+  const { cartItems, addToCart, increaseQuantity, decreaseQuantity } = useCart()
 
-  const item = cartItems.find((i) => i.id === product.id)
+  const item = cartItems.find((cartItem) => cartItem.id === product.id)
 
   return (
-    <div className="group relative overflow-hidden border border-[#fff8c9]/20 bg-[#1f0d07] text-[#fff8c9] transition duration-300 hover:border-[#fff8c9]">
-      
+    <div className="group overflow-hidden border border-[#fff8c9] bg-[#fff8c9] text-[#1f0d07] transition duration-300 hover:-translate-y-2">
       <Link to={`/product/${product.id}`}>
         <img
           src={product.image}
           alt={product.name}
-          className="h-[320px] w-full object-cover transition duration-500 group-hover:scale-105 group-hover:brightness-75"
+          className="h-[320px] w-full object-cover brightness-90 transition duration-300 group-hover:scale-105"
         />
       </Link>
 
-      <div className="p-5">
-        <h3 className="text-2xl uppercase">{product.name}</h3>
-        <p className="mt-2 text-xl text-[#fff8c9]/70">{product.price} ₽</p>
+      <div className="p-4">
+        <Link to={`/product/${product.id}`}>
+          <h3 className="text-2xl uppercase transition hover:text-[#8b2f1d]">
+            {product.name}
+          </h3>
+        </Link>
+
+        <p className="mt-2 text-xl">{product.price} ₽</p>
 
         {!item ? (
           <button
             onClick={() => {
               addToCart(product)
-              toast.success("Добавлено")
+              toast.success("Товар добавлен")
             }}
-            className="mt-5 w-full border border-[#fff8c9] py-3 uppercase transition hover:bg-[#fff8c9] hover:text-[#1f0d07]"
+            className="mt-4 w-full border border-[#1f0d07] py-2 uppercase transition hover:bg-[#1f0d07] hover:text-[#fff8c9]"
           >
             В корзину
           </button>
         ) : (
-          <div className="mt-5 flex items-center justify-between border border-[#fff8c9]">
+          <div className="mt-4 grid grid-cols-[50px_1fr_50px] border border-[#1f0d07]">
             <button
               onClick={() => decreaseQuantity(product.id)}
-              className="px-4 text-2xl"
+              className="py-2 text-2xl transition hover:bg-[#1f0d07] hover:text-[#fff8c9]"
             >
               -
             </button>
 
-            <span className="text-xl">{item.quantity}</span>
+            <div className="flex items-center justify-center border-x border-[#1f0d07] text-xl">
+              {item.quantity}
+            </div>
 
             <button
               onClick={() => increaseQuantity(product.id)}
-              className="px-4 text-2xl"
+              className="py-2 text-2xl transition hover:bg-[#1f0d07] hover:text-[#fff8c9]"
             >
               +
             </button>
