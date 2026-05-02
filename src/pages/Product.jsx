@@ -2,7 +2,7 @@ import { Link, useParams } from "react-router-dom"
 import toast from "react-hot-toast"
 
 import products from "../data/products"
-import { useCart } from "../context/CartContext"
+import { useCart } from "../context/CartContext.jsx"
 
 function Product() {
   const { id } = useParams()
@@ -10,7 +10,10 @@ function Product() {
   const { cartItems, addToCart, increaseQuantity, decreaseQuantity } =
     useCart()
 
-  const product = products.find((item) => item.id === Number(id))
+  const adminProducts = JSON.parse(localStorage.getItem("adminProducts")) || []
+  const allProducts = [...adminProducts, ...products]
+
+  const product = allProducts.find((item) => item.id === Number(id))
   const cartItem = product
     ? cartItems.find((item) => item.id === product.id)
     : null
@@ -72,20 +75,19 @@ function Product() {
             <p className="mt-6 text-4xl">{product.price} ₽</p>
 
             <p className="mt-8 text-xl leading-relaxed text-[#fff8c9]/70">
-              Украшение в стиле old school tattoo. Подходит для повседневного
-              ношения, подчёркивает индивидуальность и хорошо сочетается с
-              тёмной, винтажной эстетикой.
+              {product.description ||
+                "Украшение в стиле old school tattoo. Подходит для повседневного ношения, подчёркивает индивидуальность и хорошо сочетается с тёмной, винтажной эстетикой."}
             </p>
 
             <div className="mt-10 grid gap-4 border-y border-[#fff8c9]/30 py-6 text-lg uppercase text-[#fff8c9]/75">
               <div className="flex justify-between gap-6">
                 <span>Материал</span>
-                <span>Сталь / титан</span>
+                <span>{product.material || "Сталь / титан"}</span>
               </div>
 
               <div className="flex justify-between gap-6">
                 <span>Стиль</span>
-                <span>Old school</span>
+                <span>{product.style || "Old school"}</span>
               </div>
 
               <div className="flex justify-between gap-6">
