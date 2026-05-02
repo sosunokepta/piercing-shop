@@ -35,15 +35,26 @@ function Cart() {
                 key={item.id}
                 className="grid gap-5 border border-[#fff8c9] bg-[#fff8c9] p-4 text-[#1f0d07] sm:grid-cols-[140px_1fr] md:grid-cols-[180px_1fr_auto]"
               >
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="h-[220px] w-full object-cover brightness-90 sm:h-[140px] md:h-[180px]"
-                />
+                <Link to={`/product/${item.id}`}>
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="h-[220px] w-full object-cover brightness-90 transition hover:brightness-75 sm:h-[140px] md:h-[180px]"
+                  />
+                </Link>
 
                 <div>
-                  <h2 className="text-3xl uppercase">{item.name}</h2>
+                  <Link to={`/product/${item.id}`}>
+                    <h2 className="text-3xl uppercase transition hover:text-[#8b2f1d]">
+                      {item.name}
+                    </h2>
+                  </Link>
+
                   <p className="mt-3 text-2xl">{item.price} ₽</p>
+
+                  <p className="mt-2 text-sm uppercase text-[#1f0d07]/70">
+                    Добавлено: {item.quantity} шт.
+                  </p>
 
                   <button
                     onClick={() => removeFromCart(item.id)}
