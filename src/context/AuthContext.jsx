@@ -2,15 +2,13 @@ import { createContext, useContext, useEffect, useState } from "react"
 
 const AuthContext = createContext()
 
+const ADMIN_EMAIL = "iliaryzhov666@gmail.com"
+const ADMIN_PASSWORD = "ilia29291002"
+
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
     const savedUser = localStorage.getItem("user")
-
-    if (savedUser) {
-      return JSON.parse(savedUser)
-    }
-
-    return null
+    return savedUser ? JSON.parse(savedUser) : null
   })
 
   useEffect(() => {
@@ -22,10 +20,33 @@ export function AuthProvider({ children }) {
   }, [user])
 
   function register(userData) {
-    setUser(userData)
+    const newUser = {
+      ...userData,
+      role: "user",
+    }
+
+    localStorage.setItem("account", JSON.stringify(newUser))
+    setUser(newUser)
   }
 
   function login(email, password) {
+    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+      const adminUser = {
+        name: "Администратор",
+        email: ADMIN_EMAIL,
+        phone: "8964494564",
+        password: ADMIN_PASSWORD,
+        role: "admin",
+      }
+
+      setUser(adminUser)
+
+      return {
+        success: true,
+        message: "Вход выполнен как администратор",
+      }
+    }
+
     const savedAccount = JSON.parse(localStorage.getItem("account"))
 
     if (!savedAccount) {
@@ -60,6 +81,7 @@ export function AuthProvider({ children }) {
     const updatedUser = {
       ...currentAccount,
       ...updatedData,
+      role: currentAccount?.role || "user",
     }
 
     localStorage.setItem("account", JSON.stringify(updatedUser))
@@ -67,15 +89,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        register,
-        login,
-        logout,
-        updateUser,
-      }}
-    >
+    <AuthContext.Provider value={{ user, register, login, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   )

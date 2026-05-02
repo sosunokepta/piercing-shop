@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 
 import products from "../data/products"
@@ -11,6 +11,14 @@ function Catalog() {
 
   const [activeCategory, setActiveCategory] = useState(categoryFromUrl)
   const [sortType, setSortType] = useState("default")
+  const [adminProducts, setAdminProducts] = useState([])
+
+  useEffect(() => {
+    const savedProducts = JSON.parse(localStorage.getItem("adminProducts")) || []
+    setAdminProducts(savedProducts)
+  }, [])
+
+  const allProducts = [...adminProducts, ...products]
 
   const categories = [
     { value: "all", label: "Все" },
@@ -29,23 +37,14 @@ function Catalog() {
     }
   }
 
-  const filteredProducts = products
+  const filteredProducts = allProducts
     .filter((product) => {
-      if (activeCategory === "all") {
-        return true
-      }
-
+      if (activeCategory === "all") return true
       return product.category === activeCategory
     })
     .sort((a, b) => {
-      if (sortType === "price-low") {
-        return a.price - b.price
-      }
-
-      if (sortType === "price-high") {
-        return b.price - a.price
-      }
-
+      if (sortType === "price-low") return a.price - b.price
+      if (sortType === "price-high") return b.price - a.price
       return 0
     })
 

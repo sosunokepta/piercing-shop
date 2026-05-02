@@ -17,6 +17,7 @@ import EditProfile from "./pages/EditProfile"
 import Product from "./pages/Product"
 import OrderSuccess from "./pages/OrderSuccess"
 import MyOrders from "./pages/MyOrders"
+import Admin from "./pages/Admin"
 
 function App() {
   const location = useLocation()
@@ -40,7 +41,6 @@ function App() {
 
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
-
           <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
           <Route path="/catalog" element={<PageWrapper><Catalog /></PageWrapper>} />
           <Route path="/product/:id" element={<PageWrapper><Product /></PageWrapper>} />
@@ -52,7 +52,7 @@ function App() {
           <Route path="/login" element={<PageWrapper><Login /></PageWrapper>} />
           <Route path="/register" element={<PageWrapper><Register /></PageWrapper>} />
           <Route path="/order-success/:id" element={<PageWrapper><OrderSuccess /></PageWrapper>} />
-
+          <Route path="/admin" element={<PageWrapper><Admin /></PageWrapper>} />
         </Routes>
       </AnimatePresence>
 
