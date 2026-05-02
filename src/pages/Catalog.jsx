@@ -39,12 +39,21 @@ function Catalog() {
 
   const filteredProducts = allProducts
     .filter((product) => {
-      if (activeCategory === "all") return true
+      if (activeCategory === "all") {
+        return true
+      }
+
       return product.category === activeCategory
     })
     .sort((a, b) => {
-      if (sortType === "price-low") return a.price - b.price
-      if (sortType === "price-high") return b.price - a.price
+      if (sortType === "price-low") {
+        return a.price - b.price
+      }
+
+      if (sortType === "price-high") {
+        return b.price - a.price
+      }
+
       return 0
     })
 

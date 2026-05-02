@@ -39,9 +39,27 @@ function Product() {
     )
   }
 
+  function showCartToast() {
+    toast(
+      (t) => (
+        <Link
+          to="/cart"
+          onClick={() => toast.dismiss(t.id)}
+          className="uppercase"
+        >
+          Товар добавлен в корзину.{" "}
+          <span className="underline">Перейти</span>
+        </Link>
+      ),
+      {
+        duration: 4000,
+      },
+    )
+  }
+
   function handleAddToCart() {
     addToCart(product)
-    toast.success("Товар добавлен")
+    showCartToast()
   }
 
   return (
@@ -106,24 +124,30 @@ function Product() {
                 Добавить в корзину
               </button>
             ) : (
-              <div className="grid grid-cols-[70px_1fr_70px] border border-[#fff8c9]">
-                <button
-                  onClick={() => decreaseQuantity(product.id)}
-                  className="py-5 text-3xl transition hover:bg-[#fff8c9] hover:text-[#1f0d07]"
-                >
-                  -
-                </button>
+              <div>
+                <p className="mb-3 text-sm uppercase text-[#fff8c9]/60">
+                  В корзине: {cartItem.quantity} шт.
+                </p>
 
-                <div className="flex items-center justify-center border-x border-[#fff8c9] text-2xl">
-                  {cartItem.quantity}
+                <div className="grid grid-cols-[70px_1fr_70px] border border-[#fff8c9]">
+                  <button
+                    onClick={() => decreaseQuantity(product.id)}
+                    className="py-5 text-3xl transition hover:bg-[#fff8c9] hover:text-[#1f0d07]"
+                  >
+                    -
+                  </button>
+
+                  <div className="flex items-center justify-center border-x border-[#fff8c9] text-2xl">
+                    {cartItem.quantity}
+                  </div>
+
+                  <button
+                    onClick={() => increaseQuantity(product.id)}
+                    className="py-5 text-3xl transition hover:bg-[#fff8c9] hover:text-[#1f0d07]"
+                  >
+                    +
+                  </button>
                 </div>
-
-                <button
-                  onClick={() => increaseQuantity(product.id)}
-                  className="py-5 text-3xl transition hover:bg-[#fff8c9] hover:text-[#1f0d07]"
-                >
-                  +
-                </button>
               </div>
             )}
           </div>
