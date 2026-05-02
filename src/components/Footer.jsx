@@ -6,7 +6,7 @@ function Footer() {
           <h3 className="mb-6 text-4xl uppercase">INKSPIRED</h3>
 
           <p className="max-w-[520px] text-lg text-[#fff8c9]/70">
-            Украшения для пирсинга станущие не просто дополнением, а изюменкой твоего образа
+            Украшения для пирсинга которые станут не просто дополнением, а изюменкой твоего образа
           </p>
 
           <div className="mt-6 space-y-2 text-lg">
