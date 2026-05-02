@@ -2,12 +2,11 @@ import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import toast from "react-hot-toast"
 
-import { useCart } from "../context/CartContext"
-import { useAuth } from "../context/AuthContext"
+import { useCart } from "../context/CartContext.jsx"
+import { useAuth } from "../context/AuthContext.jsx"
 
 function Checkout() {
   const navigate = useNavigate()
-
   const { cartItems, totalPrice, clearCart } = useCart()
   const { user } = useAuth()
 
@@ -36,40 +35,6 @@ function Checkout() {
     point: "",
     comment: "",
   })
-
-  if (!user) {
-    return (
-      <main className="min-h-screen bg-[#1f0d07] px-6 pb-20 pt-32 text-[#fff8c9] md:px-12">
-        <section className="mx-auto max-w-[760px] border border-[#fff8c9] p-8 text-center">
-          <p className="mb-4 text-xl uppercase tracking-[0.25em] text-[#fff8c9]/60">
-            Checkout
-          </p>
-
-          <h1 className="text-5xl uppercase md:text-7xl">Нет доступа</h1>
-
-          <p className="mt-6 text-xl uppercase leading-relaxed text-[#fff8c9]/70">
-            Чтобы оформить заказ, сначала войдите в аккаунт или зарегистрируйтесь.
-          </p>
-
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Link
-              to="/login"
-              className="border border-[#fff8c9] px-8 py-4 text-xl uppercase transition hover:bg-[#fff8c9] hover:text-[#1f0d07]"
-            >
-              Войти
-            </Link>
-
-            <Link
-              to="/register"
-              className="border border-[#fff8c9] px-8 py-4 text-xl uppercase transition hover:bg-[#fff8c9] hover:text-[#1f0d07]"
-            >
-              Регистрация
-            </Link>
-          </div>
-        </section>
-      </main>
-    )
-  }
 
   function handleChange(event) {
     setFormData({
@@ -115,16 +80,63 @@ function Checkout() {
 
     const orderNumber = Math.floor(100000 + Math.random() * 900000)
 
+    const newOrder = {
+      id: orderNumber,
+      date: new Date().toLocaleString("ru-RU"),
+      status: "Активный",
+      items: cartItems,
+      total: totalPrice,
+      city: formData.city,
+      point: formData.point,
+    }
+
+    const savedOrders = JSON.parse(localStorage.getItem("orders")) || []
+    localStorage.setItem("orders", JSON.stringify([newOrder, ...savedOrders]))
+
     clearCart()
     toast.success("Заказ оформлен")
-
     navigate(`/order-success/${orderNumber}`)
   }
 
+  if (!user) {
+    return (
+      <main className="min-h-screen bg-[#1f0d07] px-6 pb-20 pt-28 text-[#fff8c9] md:px-12 md:pt-32">
+        <section className="mx-auto max-w-[760px] border border-[#fff8c9] p-6 text-center md:p-8">
+          <p className="mb-4 text-lg uppercase tracking-[0.25em] text-[#fff8c9]/60 md:text-xl">
+            Checkout
+          </p>
+
+          <h1 className="text-5xl uppercase md:text-7xl">Нет доступа</h1>
+
+          <p className="mt-6 text-lg uppercase leading-relaxed text-[#fff8c9]/70 md:text-xl">
+            Чтобы оформить заказ, сначала войдите в аккаунт или
+            зарегистрируйтесь.
+          </p>
+
+          <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
+            <Link
+              to="/login"
+              className="border border-[#fff8c9] px-8 py-4 text-lg uppercase transition hover:bg-[#fff8c9] hover:text-[#1f0d07] md:text-xl"
+            >
+              Войти
+            </Link>
+
+            <Link
+              to="/register"
+              className="border border-[#fff8c9] px-8 py-4 text-lg uppercase transition hover:bg-[#fff8c9] hover:text-[#1f0d07] md:text-xl"
+            >
+              Регистрация
+            </Link>
+          </div>
+        </section>
+      </main>
+    )
+  }
+
   return (
-    <main className="min-h-screen bg-[#1f0d07] px-6 pb-20 pt-32 text-[#fff8c9] md:px-12">
-      <div className="mb-12">
-        <p className="mb-4 text-xl uppercase tracking-[0.25em] text-[#fff8c9]/60">
+    <main className="min-h-screen bg-[#1f0d07] px-6 pb-20 pt-28 text-[#fff8c9] md:px-12 md:pt-32">
+      <div className="mb-10 md:mb-12">
+        <p className="mb-4 text-lg uppercase tracking-[0.25em] text-[#fff8c9]/60 md:text-xl">
           Checkout
         </p>
 
@@ -134,7 +146,7 @@ function Checkout() {
       </div>
 
       {cartItems.length === 0 ? (
-        <section className="border border-[#fff8c9] p-8">
+        <section className="border border-[#fff8c9] p-6 md:p-8">
           <h2 className="text-4xl uppercase">Корзина пустая</h2>
 
           <p className="mt-4 text-xl text-[#fff8c9]/70">
@@ -149,13 +161,18 @@ function Checkout() {
           </Link>
         </section>
       ) : (
-        <section className="grid gap-12 lg:grid-cols-[1fr_420px]">
-          <form onSubmit={handleSubmit} className="border border-[#fff8c9] p-6 md:p-8">
-            <h2 className="mb-8 text-4xl uppercase">Данные получателя</h2>
+        <section className="grid gap-8 lg:grid-cols-[1fr_420px] lg:gap-12">
+          <form
+            onSubmit={handleSubmit}
+            className="border border-[#fff8c9] p-5 md:p-8"
+          >
+            <h2 className="mb-8 text-3xl uppercase md:text-4xl">
+              Данные получателя
+            </h2>
 
             <div className="space-y-6">
               <label className="block">
-                <span className="mb-3 block text-lg uppercase text-[#fff8c9]/70">
+                <span className="mb-3 block text-base uppercase text-[#fff8c9]/70 md:text-lg">
                   Имя
                 </span>
                 <input
@@ -164,12 +181,12 @@ function Checkout() {
                   placeholder="Ваше имя"
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full border border-[#fff8c9] bg-transparent px-5 py-4 text-xl text-[#fff8c9] outline-none placeholder:text-[#fff8c9]/35 focus:bg-[#fff8c9] focus:text-[#1f0d07]"
+                  className="w-full border border-[#fff8c9] bg-transparent px-4 py-4 text-lg text-[#fff8c9] outline-none placeholder:text-[#fff8c9]/35 focus:bg-[#fff8c9] focus:text-[#1f0d07] md:px-5 md:text-xl"
                 />
               </label>
 
               <label className="block">
-                <span className="mb-3 block text-lg uppercase text-[#fff8c9]/70">
+                <span className="mb-3 block text-base uppercase text-[#fff8c9]/70 md:text-lg">
                   Телефон
                 </span>
                 <input
@@ -178,19 +195,19 @@ function Checkout() {
                   placeholder="+7 999 999 99 99"
                   value={formData.phone}
                   onChange={handleChange}
-                  className="w-full border border-[#fff8c9] bg-transparent px-5 py-4 text-xl text-[#fff8c9] outline-none placeholder:text-[#fff8c9]/35 focus:bg-[#fff8c9] focus:text-[#1f0d07]"
+                  className="w-full border border-[#fff8c9] bg-transparent px-4 py-4 text-lg text-[#fff8c9] outline-none placeholder:text-[#fff8c9]/35 focus:bg-[#fff8c9] focus:text-[#1f0d07] md:px-5 md:text-xl"
                 />
               </label>
 
               <label className="block">
-                <span className="mb-3 block text-lg uppercase text-[#fff8c9]/70">
+                <span className="mb-3 block text-base uppercase text-[#fff8c9]/70 md:text-lg">
                   Город
                 </span>
                 <select
                   name="city"
                   value={formData.city}
                   onChange={handleCityChange}
-                  className="w-full border border-[#fff8c9] bg-[#1f0d07] px-5 py-4 text-xl text-[#fff8c9] outline-none"
+                  className="w-full border border-[#fff8c9] bg-[#1f0d07] px-4 py-4 text-lg text-[#fff8c9] outline-none md:px-5 md:text-xl"
                 >
                   <option value="">Выберите город</option>
                   <option value="Владивосток">Владивосток</option>
@@ -201,14 +218,14 @@ function Checkout() {
 
               {formData.city && (
                 <label className="block">
-                  <span className="mb-3 block text-lg uppercase text-[#fff8c9]/70">
+                  <span className="mb-3 block text-base uppercase text-[#fff8c9]/70 md:text-lg">
                     Пункт СДЭК
                   </span>
                   <select
                     name="point"
                     value={formData.point}
                     onChange={handleChange}
-                    className="w-full border border-[#fff8c9] bg-[#1f0d07] px-5 py-4 text-xl text-[#fff8c9] outline-none"
+                    className="w-full border border-[#fff8c9] bg-[#1f0d07] px-4 py-4 text-lg text-[#fff8c9] outline-none md:px-5 md:text-xl"
                   >
                     <option value="">Выберите пункт выдачи</option>
                     {deliveryPoints[formData.city].map((point) => (
@@ -221,7 +238,7 @@ function Checkout() {
               )}
 
               <label className="block">
-                <span className="mb-3 block text-lg uppercase text-[#fff8c9]/70">
+                <span className="mb-3 block text-base uppercase text-[#fff8c9]/70 md:text-lg">
                   Комментарий к заказу
                 </span>
                 <textarea
@@ -229,40 +246,46 @@ function Checkout() {
                   placeholder="Например: удобное время для связи"
                   value={formData.comment}
                   onChange={handleChange}
-                  className="h-[140px] w-full resize-none border border-[#fff8c9] bg-transparent px-5 py-4 text-xl text-[#fff8c9] outline-none placeholder:text-[#fff8c9]/35 focus:bg-[#fff8c9] focus:text-[#1f0d07]"
+                  className="h-[140px] w-full resize-none border border-[#fff8c9] bg-transparent px-4 py-4 text-lg text-[#fff8c9] outline-none placeholder:text-[#fff8c9]/35 focus:bg-[#fff8c9] focus:text-[#1f0d07] md:px-5 md:text-xl"
                 />
               </label>
 
               <button
                 type="submit"
-                className="w-full border border-[#fff8c9] bg-[#fff8c9] py-5 text-xl uppercase text-[#1f0d07] transition hover:bg-transparent hover:text-[#fff8c9]"
+                className="w-full border border-[#fff8c9] bg-[#fff8c9] py-5 text-lg uppercase text-[#1f0d07] transition hover:bg-transparent hover:text-[#fff8c9] md:text-xl"
               >
                 Подтвердить заказ
               </button>
             </div>
           </form>
 
-          <aside className="h-fit border border-[#fff8c9] p-6 md:p-8">
-            <h2 className="mb-8 text-4xl uppercase">Ваш заказ</h2>
+          <aside className="h-fit border border-[#fff8c9] p-5 md:p-8 lg:sticky lg:top-28">
+            <h2 className="mb-8 text-3xl uppercase md:text-4xl">
+              Ваш заказ
+            </h2>
 
             <div className="space-y-5">
               {cartItems.map((item) => (
                 <div
                   key={item.id}
-                  className="grid grid-cols-[80px_1fr] gap-4 border-b border-[#fff8c9]/20 pb-5"
+                  className="grid grid-cols-[70px_1fr] gap-4 border-b border-[#fff8c9]/20 pb-5 md:grid-cols-[80px_1fr]"
                 >
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="h-20 w-20 object-cover brightness-90"
+                    className="h-[70px] w-[70px] object-cover brightness-90 md:h-20 md:w-20"
                   />
 
                   <div>
-                    <h3 className="text-xl uppercase">{item.name}</h3>
-                    <p className="mt-1 text-[#fff8c9]/70">
+                    <h3 className="text-lg uppercase md:text-xl">
+                      {item.name}
+                    </h3>
+
+                    <p className="mt-1 text-sm text-[#fff8c9]/70 md:text-base">
                       {item.quantity} × {item.price} ₽
                     </p>
-                    <p className="mt-2 text-xl">
+
+                    <p className="mt-2 text-lg md:text-xl">
                       {item.quantity * item.price} ₽
                     </p>
                   </div>
@@ -271,7 +294,7 @@ function Checkout() {
             </div>
 
             <div className="mt-8 border-t border-[#fff8c9] pt-6">
-              <div className="flex justify-between text-2xl uppercase">
+              <div className="flex justify-between gap-4 text-2xl uppercase">
                 <span>Итого</span>
                 <span>{totalPrice} ₽</span>
               </div>

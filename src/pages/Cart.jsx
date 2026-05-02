@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom"
-
-import { useCart } from "../context/CartContext"
+import { useCart } from "../context/CartContext.jsx"
 
 function Cart() {
   const {
@@ -12,34 +11,34 @@ function Cart() {
   } = useCart()
 
   return (
-    <main className="min-h-screen bg-[#1f0d07] px-12 pt-32 text-[#fff8c9]">
-      <h1 className="mb-12 text-7xl uppercase">Корзина</h1>
+    <main className="min-h-screen bg-[#1f0d07] px-6 pb-20 pt-28 text-[#fff8c9] md:px-12 md:pt-32">
+      <h1 className="mb-10 text-5xl uppercase md:text-7xl">Корзина</h1>
 
       {cartItems.length === 0 ? (
-        <div>
-          <p className="text-2xl uppercase text-[#fff8c9]/70">
+        <section className="border border-[#fff8c9] p-6 md:p-8">
+          <p className="text-xl uppercase text-[#fff8c9]/70 md:text-2xl">
             Корзина пока пустая.
           </p>
 
           <Link
             to="/catalog"
-            className="mt-8 inline-block border border-[#fff8c9] px-8 py-4 text-xl uppercase transition hover:bg-[#fff8c9] hover:text-[#1f0d07]"
+            className="mt-8 inline-block border border-[#fff8c9] px-6 py-4 text-lg uppercase transition hover:bg-[#fff8c9] hover:text-[#1f0d07] md:px-8 md:text-xl"
           >
             Перейти в каталог
           </Link>
-        </div>
+        </section>
       ) : (
-        <div className="grid grid-cols-[1fr_380px] gap-12">
+        <section className="grid gap-8 lg:grid-cols-[1fr_380px] lg:gap-12">
           <div className="space-y-6">
             {cartItems.map((item) => (
               <article
                 key={item.id}
-                className="grid grid-cols-[180px_1fr_auto] gap-6 border border-[#fff8c9] bg-[#fff8c9] p-4 text-[#1f0d07]"
+                className="grid gap-5 border border-[#fff8c9] bg-[#fff8c9] p-4 text-[#1f0d07] sm:grid-cols-[140px_1fr] md:grid-cols-[180px_1fr_auto]"
               >
                 <img
                   src={item.image}
                   alt={item.name}
-                  className="h-[180px] w-full object-cover brightness-75"
+                  className="h-[220px] w-full object-cover brightness-90 sm:h-[140px] md:h-[180px]"
                 />
 
                 <div>
@@ -48,25 +47,27 @@ function Cart() {
 
                   <button
                     onClick={() => removeFromCart(item.id)}
-                    className="mt-6 border border-[#1f0d07] px-5 py-2 uppercase transition hover:bg-[#1f0d07] hover:text-[#fff8c9]"
+                    className="mt-5 border border-[#1f0d07] px-5 py-2 uppercase transition hover:bg-[#1f0d07] hover:text-[#fff8c9]"
                   >
                     Удалить
                   </button>
                 </div>
 
-                <div className="flex items-center gap-4">
+                <div className="grid grid-cols-[50px_1fr_50px] border border-[#1f0d07] md:flex md:items-center md:gap-4 md:border-0">
                   <button
                     onClick={() => decreaseQuantity(item.id)}
-                    className="h-10 w-10 border border-[#1f0d07] text-2xl"
+                    className="py-2 text-2xl md:h-10 md:w-10 md:border md:border-[#1f0d07] md:py-0"
                   >
                     -
                   </button>
 
-                  <span className="text-2xl">{item.quantity}</span>
+                  <span className="flex items-center justify-center border-x border-[#1f0d07] text-2xl md:border-0">
+                    {item.quantity}
+                  </span>
 
                   <button
                     onClick={() => increaseQuantity(item.id)}
-                    className="h-10 w-10 border border-[#1f0d07] text-2xl"
+                    className="py-2 text-2xl md:h-10 md:w-10 md:border md:border-[#1f0d07] md:py-0"
                   >
                     +
                   </button>
@@ -75,19 +76,19 @@ function Cart() {
             ))}
           </div>
 
-          <aside className="h-fit border border-[#fff8c9] p-6">
+          <aside className="h-fit border border-[#fff8c9] p-6 lg:sticky lg:top-28">
             <h2 className="text-4xl uppercase">Итого</h2>
 
             <p className="mt-6 text-3xl">{totalPrice} ₽</p>
 
             <Link
               to="/checkout"
-              className="mt-8 block w-full border border-[#fff8c9] px-8 py-4 text-center text-xl uppercase transition hover:bg-[#fff8c9] hover:text-[#1f0d07]"
+              className="mt-8 block w-full border border-[#fff8c9] px-6 py-4 text-center text-lg uppercase transition hover:bg-[#fff8c9] hover:text-[#1f0d07] md:text-xl"
             >
               Оформить заказ
             </Link>
           </aside>
-        </div>
+        </section>
       )}
     </main>
   )
