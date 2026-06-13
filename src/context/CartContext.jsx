@@ -1,20 +1,28 @@
 import { createContext, useContext, useEffect, useState } from "react"
+import toast from "react-hot-toast"
 
 const CartContext = createContext()
 
 export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState(() => {
-    const savedCart = localStorage.getItem("cart")
-
-    if (savedCart) {
-      return JSON.parse(savedCart)
+    try {
+      const savedCart = localStorage.getItem("cart")
+      return savedCart ? JSON.parse(savedCart) : []
+    } catch (error) {
+      console.error("Ошибка чтения корзины:", error)
+      return []
     }
-
-    return []
   })
 
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cartItems))
+    try {
+      localStorage.setItem("cart", JSON.stringify(cartItems))
+    } catch (error) {
+      console.error("LocalStorage Error:", error)
+      if (error.name === 'QuotaExceededError' || error.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
+        toast.error("Память устройства переполнена. Очистите кэш.")
+      }
+    }
   }, [cartItems])
 
   function addToCart(product) {

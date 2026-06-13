@@ -1,100 +1,52 @@
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
+import { useCart } from "../context/CartContext.jsx"
 import toast from "react-hot-toast"
 
-import { useCart } from "../context/CartContext.jsx"
-
 function ProductCard({ product }) {
-  const navigate = useNavigate()
+  const { addToCart } = useCart()
 
-  const {
-    cartItems,
-    addToCart,
-    increaseQuantity,
-    decreaseQuantity,
-  } = useCart()
-
-  const item = cartItems.find((cartItem) => cartItem.id === product.id)
-
-  function showCartToast() {
-    toast(
-      (t) => (
-        <button
-          onClick={() => {
-            toast.dismiss(t.id)
-            navigate("/cart")
-          }}
-          className="text-left uppercase"
-        >
-          Товар добавлен в корзину.{" "}
-          <span className="underline">Перейти</span>
-        </button>
-      ),
-      {
-        duration: 4000,
-      },
-    )
-  }
-
-  function handleAddToCart() {
+  function handleAddToCart(e) {
+    e.preventDefault()
     addToCart(product)
-    showCartToast()
+    toast.success(`${product.name} добавлен в корзину`)
   }
 
   return (
-    <div className="group overflow-hidden border border-[#fff8c9] bg-[#fff8c9] text-[#1f0d07] transition duration-300 hover:-translate-y-2">
-      <Link to={`/product/${product.id}`}>
+    <Link
+      to={`/product/${product.id}`}
+      className="group flex flex-col border border-[#fff8c9]/20 bg-[#fff8c9]/5 transition hover:border-[#fff8c9]/60"
+    >
+      <div className="relative aspect-square overflow-hidden bg-[#fff8c9]/10">
         <img
           src={product.image}
           alt={product.name}
-          className="h-[320px] w-full object-cover brightness-90 transition duration-300 group-hover:scale-105"
+          loading="lazy"
+          decoding="async"
+          className="h-full w-full object-cover transition duration-500 group-hover:scale-110"
         />
-      </Link>
-
-      <div className="p-4">
-        <Link to={`/product/${product.id}`}>
-          <h3 className="text-2xl uppercase transition hover:text-[#8b2f1d]">
-            {product.name}
-          </h3>
-        </Link>
-
-        <p className="mt-2 text-xl">{product.price} ₽</p>
-
-        {item && (
-          <p className="mt-2 text-sm uppercase text-[#1f0d07]/70">
-            В корзине: {item.quantity} шт.
-          </p>
-        )}
-
-        {!item ? (
-          <button
-            onClick={handleAddToCart}
-            className="mt-4 w-full border border-[#1f0d07] py-2 uppercase transition hover:bg-[#1f0d07] hover:text-[#fff8c9]"
-          >
-            В корзину
-          </button>
-        ) : (
-          <div className="mt-4 grid grid-cols-[50px_1fr_50px] border border-[#1f0d07]">
-            <button
-              onClick={() => decreaseQuantity(product.id)}
-              className="py-2 text-2xl transition hover:bg-[#1f0d07] hover:text-[#fff8c9]"
-            >
-              -
-            </button>
-
-            <div className="flex items-center justify-center border-x border-[#1f0d07] text-xl">
-              {item.quantity}
-            </div>
-
-            <button
-              onClick={() => increaseQuantity(product.id)}
-              className="py-2 text-2xl transition hover:bg-[#1f0d07] hover:text-[#fff8c9]"
-            >
-              +
-            </button>
-          </div>
-        )}
+        <div className="absolute inset-0 bg-[#1f0d07]/20 opacity-0 transition group-hover:opacity-100" />
       </div>
-    </div>
+
+      <div className="flex flex-1 flex-col p-5">
+        <div className="mb-2 flex items-center justify-between">
+          <p className="text-xs uppercase tracking-widest text-[#fff8c9]/50">
+            {product.category}
+          </p>
+          <p className="text-sm font-medium text-[#d58b2a]">{product.price} ₽</p>
+        </div>
+
+        <h3 className="mb-6 text-xl uppercase tracking-tight text-[#fff8c9]">
+          {product.name}
+        </h3>
+
+        <button
+          onClick={handleAddToCart}
+          className="mt-auto border border-[#fff8c9] py-3 text-sm uppercase transition hover:bg-[#fff8c9] hover:text-[#1f0d07]"
+        >
+          В корзину
+        </button>
+      </div>
+    </Link>
   )
 }
 
