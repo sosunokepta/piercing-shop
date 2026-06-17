@@ -13,9 +13,9 @@ function Header() {
   return (
     <header className="fixed left-0 top-0 z-50 w-full border-b border-[#fff8c9]/20 bg-[#1f0d07]">
       <div className="mx-auto flex h-20 max-w-[1600px] items-center justify-between px-6 md:px-8">
-        <Link 
-          to="/" 
-          onClick={() => setIsMenuOpen(false)} 
+        <Link
+          to="/"
+          onClick={() => setIsMenuOpen(false)}
           className="text-3xl font-black uppercase tracking-tight text-[#fff8c9] md:text-4xl"
           aria-label="Inkspired — На главную"
         >
@@ -23,9 +23,23 @@ function Header() {
         </Link>
 
         <nav className="hidden items-center gap-10 text-xl uppercase tracking-wide text-[#fff8c9] md:flex" aria-label="Основное меню">
-          <NavLink to="/" className={({ isActive }) => `${linkClass} ${isActive ? activeClass : ""}`}>Главная</NavLink>
-          <NavLink to="/catalog" className={({ isActive }) => `${linkClass} ${isActive ? activeClass : ""}`}>Каталог</NavLink>
-          <NavLink to="/cart" className={({ isActive }) => `${linkClass} ${isActive ? activeClass : ""}`} aria-label={`Корзина, товаров: ${totalCount}`}>
+          <NavLink to="/" className={({ isActive }) => `${linkClass} ${isActive ? activeClass : ""}`}>
+            Главная
+          </NavLink>
+
+          <NavLink to="/catalog" className={({ isActive }) => `${linkClass} ${isActive ? activeClass : ""}`}>
+            Каталог
+          </NavLink>
+
+          <NavLink to="/contacts" className={({ isActive }) => `${linkClass} ${isActive ? activeClass : ""}`}>
+            Контакты
+          </NavLink>
+
+          <NavLink
+            to="/cart"
+            className={({ isActive }) => `${linkClass} ${isActive ? activeClass : ""}`}
+            aria-label={`Корзина, товаров: ${totalCount}`}
+          >
             Корзина
             {totalCount > 0 && (
               <span className="ml-2 inline-flex h-6 min-w-[24px] items-center justify-center rounded-full bg-[#fff8c9] px-2 text-sm font-bold text-[#1f0d07]">
@@ -33,7 +47,10 @@ function Header() {
               </span>
             )}
           </NavLink>
-          <NavLink to="/profile" className={({ isActive }) => `${linkClass} ${isActive ? activeClass : ""}`}>Профиль</NavLink>
+
+          <NavLink to="/profile" className={({ isActive }) => `${linkClass} ${isActive ? activeClass : ""}`}>
+            Профиль
+          </NavLink>
         </nav>
 
         <button
@@ -51,10 +68,25 @@ function Header() {
       {isMenuOpen && (
         <div className="absolute left-0 top-20 z-40 w-full border-b border-[#fff8c9]/30 bg-[#1f0d07] px-6 py-12 md:hidden">
           <nav className="flex flex-col gap-8 text-4xl uppercase text-[#fff8c9]" aria-label="Мобильное меню">
-            <NavLink to="/" onClick={() => setIsMenuOpen(false)} className={({ isActive }) => isActive ? "text-[#d58b2a]" : ""}>Главная</NavLink>
-            <NavLink to="/catalog" onClick={() => setIsMenuOpen(false)} className={({ isActive }) => isActive ? "text-[#d58b2a]" : ""}>Каталог</NavLink>
-            <NavLink to="/cart" onClick={() => setIsMenuOpen(false)} className={({ isActive }) => isActive ? "text-[#d58b2a]" : ""}>Корзина ({totalCount})</NavLink>
-            <NavLink to="/profile" onClick={() => setIsMenuOpen(false)} className={({ isActive }) => isActive ? "text-[#d58b2a]" : ""}>Профиль</NavLink>
+            <NavLink to="/" onClick={() => setIsMenuOpen(false)} className={({ isActive }) => isActive ? "text-[#d58b2a]" : ""}>
+              Главная
+            </NavLink>
+
+            <NavLink to="/catalog" onClick={() => setIsMenuOpen(false)} className={({ isActive }) => isActive ? "text-[#d58b2a]" : ""}>
+              Каталог
+            </NavLink>
+
+            <NavLink to="/contacts" onClick={() => setIsMenuOpen(false)} className={({ isActive }) => isActive ? "text-[#d58b2a]" : ""}>
+              Контакты
+            </NavLink>
+
+            <NavLink to="/cart" onClick={() => setIsMenuOpen(false)} className={({ isActive }) => isActive ? "text-[#d58b2a]" : ""}>
+              Корзина ({totalCount})
+            </NavLink>
+
+            <NavLink to="/profile" onClick={() => setIsMenuOpen(false)} className={({ isActive }) => isActive ? "text-[#d58b2a]" : ""}>
+              Профиль
+            </NavLink>
           </nav>
         </div>
       )}
