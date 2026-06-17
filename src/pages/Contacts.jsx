@@ -1,74 +1,151 @@
-import { Link } from "react-router-dom"
+import { useState } from "react"
+import toast from "react-hot-toast"
 
-function Footer() {
-  const currentYear = new Date().getFullYear()
+const initialForm = {
+  name: "",
+  contact: "",
+  message: "",
+}
+
+function sanitize(value) {
+  return String(value)
+    .replace(/[<>]/g, "")
+    .trim()
+}
+
+function Contacts() {
+  const [formData, setFormData] = useState(initialForm)
+
+  function handleChange(e) {
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault()
+
+    const request = {
+      id: Date.now(),
+      name: sanitize(formData.name),
+      contact: sanitize(formData.contact),
+      message: sanitize(formData.message),
+      status: "new",
+      createdAt: new Date().toLocaleString("ru-RU"),
+    }
+
+    if (request.name.length < 2) {
+      toast.error("Укажите имя")
+      return
+    }
+
+    if (request.contact.length < 5) {
+      toast.error("Укажите телефон или e-mail")
+      return
+    }
+
+    if (request.message.length < 10) {
+      toast.error("Сообщение должно быть не короче 10 символов")
+      return
+    }
+
+    const savedRequests = JSON.parse(localStorage.getItem("contactRequests")) || []
+    const updatedRequests = [request, ...savedRequests]
+
+    localStorage.setItem("contactRequests", JSON.stringify(updatedRequests))
+    setFormData(initialForm)
+    toast.success("Обращение отправлено")
+  }
 
   return (
-    <footer className="relative border-t border-[#fff8c9]/20 bg-[#1f0d07] py-16 text-[#fff8c9] md:py-24">
-      <div className="mx-auto max-w-[1600px] px-6 md:px-12">
-        <div className="grid gap-16 lg:grid-cols-[1fr_0.6fr]">
-          <div className="max-w-[500px]">
-            <Link to="/" className="text-4xl font-black uppercase tracking-tighter transition-colors hover:text-[#d58b2a]">
-              INKSPIRED
-            </Link>
-
-            <p className="mt-8 text-xl leading-relaxed text-[#fff8c9]/90">
-              Магазин пирсинг-украшений во Владивостоке. Мы предлагаем украшения разных категорий, удобный каталог и оформление заказа через сайт.
+    <main className="min-h-screen bg-[#1f0d07] px-6 pb-20 pt-28 text-[#fff8c9] md:px-12 md:pt-32">
+      <section className="mx-auto max-w-[1600px]">
+        <div className="grid gap-10 lg:grid-cols-[0.8fr_1fr]">
+          <div className="border border-[#fff8c9]/30 p-6 md:p-10">
+            <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#d58b2a]">
+              Связь с магазином
             </p>
 
-            <div className="mt-10 flex gap-6">
-              {[
-                { name: "ВКонтакте", url: "https://vk.com", short: "VK" },
-                { name: "Telegram", url: "https://t.me", short: "TG" },
-                { name: "Instagram", url: "https://instagram.com", short: "IG" },
-              ].map((social) => (
-                <a
-                  key={social.short}
-                  href={social.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`Мы в ${social.name}`}
-                  className="flex h-14 w-14 items-center justify-center border-2 border-[#fff8c9]/40 text-sm font-bold uppercase transition-all hover:border-[#d58b2a] hover:bg-[#d58b2a] hover:text-[#1f0d07] focus:outline focus:outline-2 focus:outline-[#d58b2a]"
-                >
-                  {social.short}
-                </a>
-              ))}
+            <h1 className="mt-6 text-5xl font-black uppercase leading-none md:text-7xl">
+              Контакты
+            </h1>
+
+            <p className="mt-8 max-w-[620px] text-xl leading-relaxed text-[#fff8c9]/80">
+              Через форму обратной связи можно задать вопрос по наличию украшений, материалу изделия, оформлению заказа или доставке. Обращение сохраняется в системе и отображается в административной панели.
+            </p>
+
+            <div className="mt-10 space-y-5 text-lg uppercase text-[#fff8c9]/90">
+              <p>
+                <span className="text-[#d58b2a]">Адрес:</span> г. Владивосток, ул. Шепеткова, д. 60, к. 411
+              </p>
+              <p>
+                <span className="text-[#d58b2a]">Телефон:</span> +7 (800) 504-50-50
+              </p>
+              <p>
+                <span className="text-[#d58b2a]">E-mail:</span> inkspired-shop@mail.ru
+              </p>
+              <p>
+                <span className="text-[#d58b2a]">Режим работы:</span> ежедневно, 10:00–20:00
+              </p>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-10 md:grid-cols-3">
-            <nav className="flex flex-col gap-5" aria-label="Навигация в футере">
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#fff8c9]/50">Магазин</p>
-              <Link to="/catalog" className="text-lg uppercase hover:text-[#d58b2a] hover:underline underline-offset-4">
-                Каталог
-              </Link>
-              <Link to="/cart" className="text-lg uppercase hover:text-[#d58b2a] hover:underline underline-offset-4">
-                Корзина
-              </Link>
-              <Link to="/contacts" className="text-lg uppercase hover:text-[#d58b2a] hover:underline underline-offset-4">
-                Контакты
-              </Link>
-            </nav>
+          <form onSubmit={handleSubmit} className="space-y-5 border border-[#fff8c9]/30 p-6 md:p-10">
+            <h2 className="text-3xl font-black uppercase md:text-4xl">
+              Форма обратной связи
+            </h2>
 
-            <nav className="flex flex-col gap-5" aria-label="Аккаунт в футере">
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#fff8c9]/50">Аккаунт</p>
-              <Link to="/profile" className="text-lg uppercase hover:text-[#d58b2a] hover:underline underline-offset-4">
-                Профиль
-              </Link>
-              <Link to="/login" className="text-lg uppercase hover:text-[#d58b2a] hover:underline underline-offset-4">
-                Войти
-              </Link>
-            </nav>
-          </div>
-        </div>
+            <label className="block">
+              <span className="mb-2 block text-sm font-bold uppercase tracking-[0.18em] text-[#fff8c9]/60">
+                Имя
+              </span>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Введите имя"
+                className="w-full border border-[#fff8c9]/50 bg-transparent p-4 text-lg outline-none transition focus:border-[#d58b2a]"
+              />
+            </label>
 
-        <div className="mt-20 flex flex-col justify-between gap-6 border-t border-[#fff8c9]/20 pt-10 text-sm uppercase tracking-[0.2em] text-[#fff8c9]/50 md:flex-row">
-          <p>© {currentYear} INKSPIRED PIERCING STUDIO</p>
-          <p>Разработка информационной системы: Рыжов И. Д.</p>
+            <label className="block">
+              <span className="mb-2 block text-sm font-bold uppercase tracking-[0.18em] text-[#fff8c9]/60">
+                Телефон или e-mail
+              </span>
+              <input
+                type="text"
+                name="contact"
+                value={formData.contact}
+                onChange={handleChange}
+                placeholder="Введите контакт для ответа"
+                className="w-full border border-[#fff8c9]/50 bg-transparent p-4 text-lg outline-none transition focus:border-[#d58b2a]"
+              />
+            </label>
+
+            <label className="block">
+              <span className="mb-2 block text-sm font-bold uppercase tracking-[0.18em] text-[#fff8c9]/60">
+                Сообщение
+              </span>
+              <textarea
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                placeholder="Напишите вопрос по товару, заказу или доставке"
+                className="h-44 w-full resize-none border border-[#fff8c9]/50 bg-transparent p-4 text-lg outline-none transition focus:border-[#d58b2a]"
+              />
+            </label>
+
+            <button
+              type="submit"
+              className="w-full border border-[#fff8c9] bg-[#fff8c9] px-8 py-5 text-lg font-black uppercase text-[#1f0d07] transition hover:bg-transparent hover:text-[#fff8c9]"
+            >
+              Отправить обращение
+            </button>
+          </form>
         </div>
-      </div>
-    </footer>
+      </section>
+    </main>
   )
 }
 
-export default Footer
+export default Contacts
