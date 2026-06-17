@@ -2,8 +2,8 @@ import { createContext, useContext, useEffect, useState } from "react"
 
 const AuthContext = createContext()
 
-const ADMIN_EMAIL = "iliaryzhov666@gmail.com"
-const ADMIN_PASSWORD = "ilia29291002"
+const ADMIN_EMAIL = "admin@inkspired.local"
+const ADMIN_PASSWORD = "admin12345"
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
