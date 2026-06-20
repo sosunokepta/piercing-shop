@@ -19,6 +19,7 @@ import OrderSuccess from "./pages/OrderSuccess"
 import MyOrders from "./pages/MyOrders"
 import Admin from "./pages/Admin"
 import Contacts from "./pages/Contacts"
+import PersonalDataPolicy from "./pages/PersonalDataPolicy"
 
 function App() {
   const location = useLocation()
@@ -47,6 +48,7 @@ function App() {
           <Route path="/product/:id" element={<PageWrapper><Product /></PageWrapper>} />
           <Route path="/cart" element={<PageWrapper><Cart /></PageWrapper>} />
           <Route path="/contacts" element={<PageWrapper><Contacts /></PageWrapper>} />
+          <Route path="/personal-data-policy" element={<PageWrapper><PersonalDataPolicy /></PageWrapper>} />
           <Route path="/checkout" element={<PageWrapper><Checkout /></PageWrapper>} />
           <Route path="/profile" element={<PageWrapper><Profile /></PageWrapper>} />
           <Route path="/profile/edit" element={<PageWrapper><EditProfile /></PageWrapper>} />

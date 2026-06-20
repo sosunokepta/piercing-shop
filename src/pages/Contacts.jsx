@@ -1,10 +1,12 @@
 import { useState } from "react"
+import { Link } from "react-router-dom"
 import toast from "react-hot-toast"
 
 const initialForm = {
   name: "",
   contact: "",
   message: "",
+  personalDataConsent: false,
 }
 
 function sanitize(value) {
@@ -17,8 +19,11 @@ function Contacts() {
   const [formData, setFormData] = useState(initialForm)
 
   function handleChange(e) {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
+    const { name, value, type, checked } = e.target
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }))
   }
 
   function handleSubmit(e) {
@@ -29,6 +34,8 @@ function Contacts() {
       name: sanitize(formData.name),
       contact: sanitize(formData.contact),
       message: sanitize(formData.message),
+      personalDataConsent: formData.personalDataConsent,
+      personalDataConsentDate: new Date().toLocaleString("ru-RU"),
       status: "new",
       createdAt: new Date().toLocaleString("ru-RU"),
     }
@@ -45,6 +52,11 @@ function Contacts() {
 
     if (request.message.length < 10) {
       toast.error("Сообщение должно быть не короче 10 символов")
+      return
+    }
+
+    if (!request.personalDataConsent) {
+      toast.error("Нужно дать согласие на обработку персональных данных")
       return
     }
 
@@ -133,6 +145,26 @@ function Contacts() {
                 placeholder="Напишите вопрос по товару, заказу или доставке"
                 className="h-44 w-full resize-none border border-[#fff8c9]/50 bg-transparent p-4 text-lg outline-none transition focus:border-[#d58b2a]"
               />
+            </label>
+
+            <label className="flex cursor-pointer gap-4 border border-[#fff8c9]/40 p-4 text-base leading-relaxed text-[#fff8c9]/80">
+              <input
+                type="checkbox"
+                name="personalDataConsent"
+                checked={formData.personalDataConsent}
+                onChange={handleChange}
+                className="mt-1 h-5 w-5 shrink-0 accent-[#d58b2a]"
+              />
+              <span>
+                Я даю согласие на обработку персональных данных и подтверждаю, что ознакомлен с{" "}
+                <Link
+                  to="/personal-data-policy"
+                  className="font-bold text-[#fff8c9] underline underline-offset-4 transition hover:text-[#d58b2a]"
+                >
+                  правилами обработки персональных данных
+                </Link>
+                .
+              </span>
             </label>
 
             <button

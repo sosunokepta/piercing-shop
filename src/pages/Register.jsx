@@ -13,12 +13,15 @@ function Register() {
     email: "",
     phone: "",
     password: "",
+    personalDataConsent: false,
   })
 
   function handleChange(event) {
+    const { name, value, type, checked } = event.target
+
     setFormData({
       ...formData,
-      [event.target.name]: event.target.value,
+      [name]: type === "checkbox" ? checked : value,
     })
   }
 
@@ -40,8 +43,18 @@ function Register() {
       return
     }
 
-    localStorage.setItem("account", JSON.stringify(formData))
-    register(formData)
+    if (!formData.personalDataConsent) {
+      toast.error("Нужно дать согласие на обработку персональных данных")
+      return
+    }
+
+    const accountData = {
+      ...formData,
+      personalDataConsentDate: new Date().toLocaleString("ru-RU"),
+    }
+
+    localStorage.setItem("account", JSON.stringify(accountData))
+    register(accountData)
 
     toast.success("Регистрация успешна")
     navigate("/profile")
@@ -124,6 +137,26 @@ function Register() {
                 onChange={handleChange}
                 className="w-full border border-[#fff8c9] bg-transparent px-5 py-4 text-xl text-[#fff8c9] outline-none transition placeholder:text-[#fff8c9]/30 focus:bg-[#fff8c9] focus:text-[#1f0d07]"
               />
+            </label>
+
+            <label className="flex cursor-pointer gap-4 border border-[#fff8c9]/40 p-4 text-base leading-relaxed text-[#fff8c9]/80">
+              <input
+                type="checkbox"
+                name="personalDataConsent"
+                checked={formData.personalDataConsent}
+                onChange={handleChange}
+                className="mt-1 h-5 w-5 shrink-0 accent-[#d58b2a]"
+              />
+              <span>
+                Я даю согласие на обработку персональных данных и подтверждаю, что ознакомлен с{" "}
+                <Link
+                  to="/personal-data-policy"
+                  className="font-bold text-[#fff8c9] underline underline-offset-4 transition hover:text-[#d58b2a]"
+                >
+                  правилами обработки персональных данных
+                </Link>
+                .
+              </span>
             </label>
 
             <button
