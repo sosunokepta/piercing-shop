@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import Header from "./components/Header"
 import Footer from "./components/Footer"
 import Loader from "./components/Loader"
+import CookieBanner from "./components/CookieBanner"
 
 import Home from "./pages/Home"
 import Catalog from "./pages/Catalog"
@@ -61,6 +62,7 @@ function App() {
       </AnimatePresence>
 
       <Footer />
+      <CookieBanner />
     </>
   )
 }

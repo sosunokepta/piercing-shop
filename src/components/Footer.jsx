@@ -48,6 +48,9 @@ function Footer() {
               <Link to="/contacts" className="text-lg uppercase hover:text-[#d58b2a] hover:underline underline-offset-4">
                 Контакты
               </Link>
+              <Link to="/personal-data-policy" className="text-lg uppercase hover:text-[#d58b2a] hover:underline underline-offset-4">
+                Персональные данные
+              </Link>
             </nav>
 
             <nav className="flex flex-col gap-5" aria-label="Аккаунт в футере">
