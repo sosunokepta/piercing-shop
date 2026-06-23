@@ -92,7 +92,11 @@ function Home() {
           </p>
 
           <h2 className="text-5xl uppercase md:text-7xl">
-            Украшения с характером 
+            Украшения
+            <br />
+            с
+            <br />
+            характером 
             <br />
             и 
             <br />
