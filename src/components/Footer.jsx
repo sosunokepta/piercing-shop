@@ -67,7 +67,7 @@ function Footer() {
 
         <div className="mt-20 flex flex-col justify-between gap-6 border-t border-[#fff8c9]/20 pt-10 text-sm uppercase tracking-[0.2em] text-[#fff8c9]/50 md:flex-row">
           <p>© {currentYear} INKSPIRED PIERCING STUDIO</p>
-          <p>Разработка информационной системы: Рыжов И. Д.</p>
+          <p>Designed & Developed by Ryzhov I.D.</p>
         </div>
       </div>
     </footer>
